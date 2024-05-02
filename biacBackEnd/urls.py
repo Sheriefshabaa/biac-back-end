@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from classification_model import urls as classification_model_urls
+from classified_image import urls as classified_image
 from users import urls as auth_urls
+from image import urls as upolad_image_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include(auth_urls)),
     path('', include(classification_model_urls)),
+    path('classification/', include(classified_image)),
+    path('classification/',include(upolad_image_urls))
 ]
