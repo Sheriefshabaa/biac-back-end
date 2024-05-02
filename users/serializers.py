@@ -26,7 +26,11 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     @transaction.atomic
     def save(self, request):
-        """  """ 
+        """  this function is taking the input from user 
+        -> validate the input 
+        -> create a object in database 
+        -> returned the new user object
+        """ 
         user = super().save(request)
         user.gender = self.data.get('gender')
         user.phone_number = self.data.get('phone_number')
