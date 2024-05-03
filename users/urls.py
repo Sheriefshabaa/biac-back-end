@@ -17,18 +17,27 @@ from django.urls import path, include
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 
 from dj_rest_auth.views import PasswordResetConfirmView
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
+# from .serializers import LoginTokenObtainPairSerializer
+from django.urls import path
+from .views import LoginView ,LogoutBlacklistTokenUpdateView
+
 
 
 urlpatterns = [
-    path('', include('dj_rest_auth.urls')),
     path(
         'registration/account-confirm-email/<str:key>/',
         ConfirmEmailView.as_view(),
     ),
-    path('registration/', include('dj_rest_auth.registration.urls')),
     path('account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     path(
         'password/reset/confirm/<slug:uidb64>/<slug:token>/',
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'
     ),
+    path('registration/', include('dj_rest_auth.registration.urls')),
+    path('login/', LoginView.as_view(), name='login'),  
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('logout/', LogoutBlacklistTokenUpdateView.as_view(),name='blacklist'),
 ]

@@ -15,8 +15,10 @@ def upload_to(instance, filename):
     return 'user_image/{filename}'.format(filename=filename)
 
 class CustomUser(AbstractUser):
-    gender = models.CharField(max_length=20, choices=GENDER_SELECTION)
-    phone_number = models.CharField(max_length=30)
+    first_name=models.CharField(max_length=20,null=True)
+    last_name=models.CharField(max_length=20,null=True)
+    gender = models.CharField(max_length=20, choices=GENDER_SELECTION,null=True)
+    phone_number = models.CharField(max_length=30,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     date_of_birth = models.DateField(null=True)
     is_premium = models.BooleanField(default=False)

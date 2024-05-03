@@ -25,5 +25,6 @@ urlpatterns = [
     path('auth/', include(auth_urls)),
     path('', include(classification_model_urls)),
     path('classification/', include(classified_image)),
-    path('classification/',include(upolad_image_urls))
+    path('classification/',include(upolad_image_urls)),
+    
 ]
