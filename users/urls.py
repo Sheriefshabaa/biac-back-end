@@ -22,11 +22,13 @@ from rest_framework_simplejwt.views import (
 )
 # from .serializers import LoginTokenObtainPairSerializer
 from django.urls import path
-from .views import LoginView ,LogoutBlacklistTokenUpdateView
+from .views import LoginView ,LogoutBlacklistTokenUpdateView,HistoryUserView ,UpdateProfileView
 
 
 
 urlpatterns = [
+    path('registration/', include('dj_rest_auth.registration.urls')),
+    path('login/', LoginView.as_view(), name='login'),  
     path(
         'registration/account-confirm-email/<str:key>/',
         ConfirmEmailView.as_view(),
@@ -36,8 +38,9 @@ urlpatterns = [
         'password/reset/confirm/<slug:uidb64>/<slug:token>/',
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'
     ),
-    path('registration/', include('dj_rest_auth.registration.urls')),
-    path('login/', LoginView.as_view(), name='login'),  
+    
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout/', LogoutBlacklistTokenUpdateView.as_view(),name='blacklist'),
+    path('user_history/<int:id>/', HistoryUserView.as_view(),name='user_history'),
+    path('update_profile/<int:id>/',UpdateProfileView.as_view(),name='update_profile'),
 ]
