@@ -1,15 +1,22 @@
+
 import requests
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated  
+from rest_framework.response import Response 
+from django.http import HttpResponse
+from rest_framework.permissions import IsAuthenticated
+
+ 
 from .serializers import imageSerializer
 from rest_framework.parsers import (MultiPartParser, FormParser)
 from rest_framework import status
 
 
+
+
+
+
 class UploadImageView(APIView):
     serializer_class = imageSerializer
-    permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
@@ -20,3 +27,8 @@ class UploadImageView(APIView):
             response = requests.post(f'http://127.0.0.1:8000//classification/classified_image/{image_id}/')
             return Response(response.json(), status=response.status_code)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+        
+

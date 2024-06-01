@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'corsheaders',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -57,10 +59,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 
     'dj_rest_auth',
-    'users.apps.UsersConfig',
-    'image.apps.ImageConfig',
-    'classification_model.apps.ClassificationModelConfig',
-    'classified_image.apps.ClassifiedImageConfig'
+  
+    'users',
+    'biacBackEnd',
+    'classification_model',
+    'image',
+    'classified_image',
+    'firstAidsProcedure',
 ]
 # 'users',
 #     'biacBackEnd',
@@ -69,6 +74,7 @@ INSTALLED_APPS = [
 #     'classified_image'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,6 +86,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'biacBackEnd.urls'
+
+
+# CORS_ALLOW_ALL_ORIGINS = True # for testing purpose DON'T use in production
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:54906/'
+# ]
+CORS_ALLOWED_ORIGINS = ['*']
 
 TEMPLATES = [
     {
@@ -150,6 +163,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -167,7 +181,15 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
+
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
+
+
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
+
+
 
 REST_AUTH = {
     'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
@@ -180,8 +202,8 @@ REST_AUTH = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1), # for testing only it supose to be 5 mins 
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),

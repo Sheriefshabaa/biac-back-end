@@ -2,7 +2,7 @@ from django.db import models
 from image.models import Image
 
 class Classified_image (models.Model) :
-    image_id = models.ForeignKey(Image, on_delete=models.CASCADE)
+    image_id = models.ForeignKey(Image,related_name='classified_image' ,on_delete=models.CASCADE)
     volunteers_evaluation_score = models.IntegerField(null=True)
     number_of_evalutors_per_image = models.IntegerField(null=True)
     image_with_model_classification = models.ImageField(null=False)

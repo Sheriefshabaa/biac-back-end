@@ -7,7 +7,7 @@ from ultralytics import YOLO
 from PIL import Image as pil_image
 from .models import Classified_image
 from rest_framework import status
-from .serializers import ClassifiedImageSerializer
+from .serializers import ClassifiedImageHistoryDataSerializer, ClassifiedImageSerializer
 import numpy as np
 
 
@@ -71,7 +71,7 @@ def process_image(image) :
         burn_degree=class_name,
     )
     #7
-    classified_image_serializer = ClassifiedImageSerializer(classified_image_object)
+    classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image_object)
     return classified_image_serializer.data
     
 
