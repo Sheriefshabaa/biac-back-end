@@ -24,7 +24,6 @@ from firstAidsProcedure import urls as firstAidsProcedure_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include(auth_urls)),
-    path('', include(classification_model_urls)),
     path('classification/', include(classified_image)),
     path('classification/',include(upolad_image_urls)),
     path('accounts/', include('allauth.urls')),

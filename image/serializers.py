@@ -14,6 +14,7 @@ class imageFieldsSerializer (serializers.ModelSerializer):
 
 class imageSerializer (serializers.ModelSerializer):
     provided_image = serializers.ImageField(required=True)
+
     class Meta :
         model = Image
         fields = ['provided_image']
