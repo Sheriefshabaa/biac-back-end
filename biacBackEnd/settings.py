@@ -29,10 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 SITE_ID = 1
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
@@ -61,7 +60,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 
     'dj_rest_auth',
-
+  
     'users',
     'biacBackEnd',
     'classification_model',
@@ -70,6 +69,11 @@ INSTALLED_APPS = [
     'firstAidsProcedure',
     'tbsa',
 ]
+# 'users',
+#     'biacBackEnd',
+#     'classification_model',
+#     'image',
+#     'classified_image'
 
 MIDDLEWARE = [
     # 'corsheaders.middleware.CorsMiddleware',
@@ -96,7 +100,7 @@ ROOT_URLCONF = 'biacBackEnd.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'biacBackEnd/templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'biacBackEnd/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,7 +115,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {
@@ -124,7 +127,6 @@ DATABASES = {
         'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -144,7 +146,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -158,15 +159,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
-
-
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
@@ -189,7 +188,15 @@ PASSWORD_RESET_TIMEOUT = 14400
 ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
 
+
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
+
+
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
+
+
 
 
 
@@ -204,8 +211,6 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'auth',
     'JWT_AUTH_HTTPONLY': True,
 }
-
-
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30), # for testing only it supose to be 5 mins 
@@ -237,11 +242,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-
-
 CUSTOM_PASSWORD_RESET_CONFIRM = 'desired URL'
 
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

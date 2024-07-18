@@ -23,6 +23,9 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=30)
     last_name = serializers.CharField(max_length=30)
   
+    first_name = serializers.CharField(max_length=30)
+    last_name = serializers.CharField(max_length=30)
+  
     @transaction.atomic
     def save(self, request):
         """  
@@ -35,7 +38,9 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.first_name = self.data.get('first_name')
         user.last_name = self.data.get('last_name')
         user.is_active = False
+        user.is_active = False
         user.save()
+        send_email_confirmation(request, user)
         send_email_confirmation(request, user)
         return user
 
@@ -49,6 +54,26 @@ def calculateAge(date_of_birth):
     is_before_birthday = (today.month, today.day) < (date_of_birth.month, date_of_birth.day)
     age = years_difference - int(is_before_birthday)
     return age
+
+
+
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'gender','phone_number', 'date_of_birth', 'user_image']
+
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance.user_image = validated_data.get('user_image', instance.user_image)
+        instance.save()
+        return instance
+
 
 
 
@@ -87,11 +112,13 @@ class LoginTokenObtainPairSerializer(serializers.Serializer):
 
         # Return tokens and user data (using custom user serializer)
         
+        
         token = RefreshToken.for_user(user)
         user_serializer = CustomUserDetailsSerializer(user)
         return {
             'token': str(token.access_token),
             'refresh': str(token),  # Include refresh token if needed
+            'user_id': user_serializer.data['pk'],
             'user_id': user_serializer.data['pk'],
         }
     

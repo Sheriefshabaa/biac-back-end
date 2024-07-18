@@ -15,11 +15,13 @@ class imageFieldsSerializer (serializers.ModelSerializer):
 
 class imageSerializer (serializers.ModelSerializer):
     provided_image = serializers.ImageField(required=True)
+
     class Meta :
         model = Image
         fields = ['provided_image']
 
     def create(self, validated_data):
+        request_user = self.context['request'].user
         request_user = self.context['request'].user
         provided_image = self.validated_data.get('provided_image', None)
         image = pil_image.open(provided_image)

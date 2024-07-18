@@ -1,8 +1,12 @@
 from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import CustomUser
+from .serializers import LoginTokenObtainPairSerializer , HistoryUserClassifiedImagesSerializer , UpdateProfileSerializer
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from .models import CustomUser
 from .serializers import LoginTokenObtainPairSerializer , HistoryUserClassifiedImagesSerializer , UpdateProfileSerializer
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
@@ -11,10 +15,15 @@ from image.models import Image
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.tokens import RefreshToken
+from image.models import Image
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
     serializer_class = LoginTokenObtainPairSerializer
+    # parser_classes = [JSONParser]
     # parser_classes = [JSONParser]
     def post(self, request, format=None):
         serializer = LoginTokenObtainPairSerializer(data=request.data)
@@ -28,13 +37,27 @@ class UpdateProfileView(APIView):
     permission_classes = [AllowAny]
     serializer_class = UpdateProfileSerializer
     parser_classes = [MultiPartParser, FormParser]
+class UpdateProfileView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = UpdateProfileSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     def put(self, request, *args, **kwargs):
         try:
             user = CustomUser.objects.get(id=self.kwargs['id'])
         except CustomUser.DoesNotExist:
             return Response('the user does not exist', status=status.HTTP_401_BAD_REQUEST)
+    def put(self, request, *args, **kwargs):
+        try:
+            user = CustomUser.objects.get(id=self.kwargs['id'])
+        except CustomUser.DoesNotExist:
+            return Response('the user does not exist', status=status.HTTP_401_BAD_REQUEST)
 
+        serializer = self.serializer_class(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
