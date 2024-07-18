@@ -17,7 +17,7 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    # 'corsheaders',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -64,21 +66,32 @@ INSTALLED_APPS = [
     'biacBackEnd',
     'classification_model',
     'image',
-    'classified_image'
+    'classified_image',
+    'firstAidsProcedure',
+    'tbsa',
 ]
 
 MIDDLEWARE = [
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'users.middleware.GuestUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'biacBackEnd.urls'
+
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",  # Example origin with HTTP scheme and localhost
+#     "https://example.com",    # Example origin with HTTPS scheme and example.com
+# ]
+
 
 TEMPLATES = [
     {
@@ -101,15 +114,14 @@ WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'biac',
-        'USER': 'postgres',
-        'PASSWORD': 'biac',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DATABASE_NAME', 'biac'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'biac'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
@@ -155,6 +167,7 @@ STATIC_URL = '/static/'
 
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -172,7 +185,15 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
+
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
+
+
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
+
+
 
 REST_AUTH = {
     'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
@@ -187,8 +208,8 @@ REST_AUTH = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30), # for testing only it supose to be 5 mins 
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),

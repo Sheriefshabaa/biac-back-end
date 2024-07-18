@@ -3,7 +3,7 @@
 import uuid
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import torch
+
 from .serializers import imgSerializer
 from rest_framework.parsers import (MultiPartParser, FormParser)
 from django.conf import settings
