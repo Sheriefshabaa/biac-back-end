@@ -13,7 +13,7 @@ class Image (models.Model):
     image_width = models.IntegerField()  
     image_height = models.IntegerField() 
     captured_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name='image',on_delete=models.CASCADE)
 
     # def __sntr__(self):
     #     retur f"provided Image(id: {self.image_id}, captured_by: {self.user_id.first_name})"
