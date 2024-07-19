@@ -155,3 +155,7 @@ class FeatureView(APIView):
 In this example, FeatureView is an API view that handles interactions with the feature. It checks if the request is coming from an authenticated user or an anonymous user. If the user is authenticated, it uses the authenticated user's information. If the user is anonymous, it either creates or retrieves a unique identifier for the anonymous user and associates the action with this identifier. The action and associated user information are then saved in the database using the AnonymousUserAction model.
 
 You can customize this example based on your specific requirements and the structure of your application. Additionally, make sure to implement appropriate security measures to protect user data and handle authentication and authorization properly.
+
+
+
+FROM python:3.8-alpine

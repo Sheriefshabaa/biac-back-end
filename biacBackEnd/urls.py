@@ -20,13 +20,17 @@ from classified_image import urls as classified_image
 from users import urls as auth_urls
 from image import urls as upolad_image_urls
 from firstAidsProcedure import urls as firstAidsProcedure_urls
+from tbsa import urls as tbsa_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include(auth_urls)),
+    # path('', include(classification_model_urls)),
     path('classification/', include(classified_image)),
     path('classification/',include(upolad_image_urls)),
     path('accounts/', include('allauth.urls')),
     path('results/',include(firstAidsProcedure_urls)),
+    path('tbsa/',include(tbsa_urls)),
 ]
+
 

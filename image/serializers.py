@@ -12,6 +12,7 @@ class imageFieldsSerializer (serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class imageSerializer (serializers.ModelSerializer):
     provided_image = serializers.ImageField(required=True)
 
@@ -19,14 +20,14 @@ class imageSerializer (serializers.ModelSerializer):
         model = Image
         fields = ['provided_image']
 
-
     def create(self, validated_data):
+        request_user = self.context['request'].user
         request_user = self.context['request'].user
         provided_image = self.validated_data.get('provided_image', None)
         image = pil_image.open(provided_image)
         image_width, image_height = image.size
         if request_user.is_anonymous:
-            validated_data['user'] = CustomUser.objects.get(pk=67)
+            validated_data['user'] = CustomUser.objects.get(email="guestbiacgp@gmail.com")
         else:
             validated_data['user'] = request_user
         return Image.objects.create(
@@ -34,4 +35,6 @@ class imageSerializer (serializers.ModelSerializer):
             image_width=image_width,
             image_height=image_height,
         )
+    
+
     

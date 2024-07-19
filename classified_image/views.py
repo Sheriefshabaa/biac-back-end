@@ -1,3 +1,4 @@
+
 import os
 import uuid
 from rest_framework.views import APIView
@@ -8,7 +9,6 @@ from PIL import Image as pil_image
 from .models import Classified_image
 from rest_framework import status
 from .serializers import ClassifiedImageHistoryDataSerializer, ClassifiedImageSerializer
-import numpy as np
 
 
 
@@ -28,7 +28,7 @@ def process_image(image) :
     #2
     image_resized = input_image.resize([300, 300]) 
     #3
-    model_file_path = 'model/best.pt'
+    model_file_path = 'model/burn/best.pt'
     model = YOLO(model_file_path)
     prediction = model.predict(image_resized,conf=0.5)
     #4
@@ -53,13 +53,11 @@ def process_image(image) :
 
     # Get the class name and count as variables
     class_name = None
-    class_count = None
     if class_counts:
         sorted_counts = sorted(class_counts.items(), key=lambda x: x[1], reverse=True)
         top_class_id, top_class_count = sorted_counts[0]
         class_name = model.names[top_class_id]
-        class_count = top_class_count
-
+    print(f"bla bla {box_xywh[0][0]}")
     classified_image_object = Classified_image.objects.create(
         image_with_model_classification=output_image_path,
         image_id=image,
@@ -71,6 +69,7 @@ def process_image(image) :
         burn_degree=class_name,
     )
     #7
+    classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image_object)
     classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image_object)
     return classified_image_serializer.data
     
