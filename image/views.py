@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from rest_framework.permissions import IsAuthenticated
 
  
-from .serializers import imageSerializer
+from .serializers import ImageSerializer
 from rest_framework.parsers import (MultiPartParser, FormParser)
 from rest_framework import status
 
@@ -16,11 +16,11 @@ from rest_framework import status
 
 
 class UploadImageView(APIView):
-    serializer_class = imageSerializer
+    serializer_class = ImageSerializer
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
-        serializer = imageSerializer(data=request.data, context={'request': request})
+        serializer = ImageSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             image = serializer.save()
             image_id = image.id
@@ -31,6 +31,5 @@ class UploadImageView(APIView):
             absolute_image_url = request.build_absolute_uri(image_url)
             
             response_data["processed_image_data"]["image_with_model_classification"] = absolute_image_url
-            
             return Response(response_data, status=response.status_code)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

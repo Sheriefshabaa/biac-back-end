@@ -70,7 +70,6 @@ def process_image(image) :
     )
     #7
     classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image_object)
-    classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image_object)
     return classified_image_serializer.data
     
 
