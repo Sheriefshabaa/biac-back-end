@@ -1,20 +1,27 @@
-# Base image for Python environment (replace with a compatible version if needed)
-FROM python:3.11-slim
+# First stage: Build
+FROM python:3.11-slim as builder
 
-
-
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy project directory and pre-activated virtual environment
+# Install build dependencies
+RUN apt-get update && apt-get install -y build-essential
+
+# Install Python dependencies
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+# Second stage: Final image
+FROM python:3.11-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy installed dependencies from the builder stage
+COPY --from=builder /Users/Doha/AppData/Roaming/Python/Python311/site-packages/ /Users/Doha/AppData/Roaming/Python/Python311/site-packages/
+
+# Copy the rest of the application code
 COPY . .
 
-# Install project dependencies (assuming requirements.txt is present)
-COPY requirements.txt .
-RUN pip install -r requirements.txt --verbose --timeout=120
-
-# Expose port (adjust as needed)
-EXPOSE 8000
-
-# Command to run the application (replace with your actual command)
+# Command to run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
