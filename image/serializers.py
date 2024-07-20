@@ -6,14 +6,20 @@ from .models import CustomUser
 
 
 
-class imageFieldsSerializer (serializers.ModelSerializer):    
+class ImageFieldsSerializer (serializers.ModelSerializer):    
     class Meta :
         model = Image
         fields = '__all__'
 
+class GetImageSerializer(serializers.ModelSerializer):
+    class Meta :
+       model = Image
+       fields = ['provided_image']
 
 
-class imageSerializer (serializers.ModelSerializer):
+
+
+class ImageSerializer (serializers.ModelSerializer):
     provided_image = serializers.ImageField(required=True)
 
     class Meta :
