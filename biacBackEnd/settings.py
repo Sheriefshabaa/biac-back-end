@@ -15,7 +15,11 @@ from pathlib import Path
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
 # Quick-start development settings - unsuitable for production
@@ -63,7 +67,6 @@ INSTALLED_APPS = [
   
     'users',
     'biacBackEnd',
-    'classification_model',
     'image',
     'classified_image',
     'firstAidsProcedure',
@@ -71,7 +74,6 @@ INSTALLED_APPS = [
 ]
 # 'users',
 #     'biacBackEnd',
-#     'classification_model',
 #     'image',
 #     'classified_image'
 
@@ -108,6 +110,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -244,7 +247,7 @@ AUTHENTICATION_BACKENDS = [
 
 CUSTOM_PASSWORD_RESET_CONFIRM = 'desired URL'
 
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+# MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
