@@ -12,7 +12,7 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
 # Second stage: Final image
-FROM python:3.11-slim
+FROM python:3.11
 
 # Set the working directory
 WORKDIR /app
