@@ -24,7 +24,7 @@ class UploadImageView(APIView):
         if serializer.is_valid():
             image = serializer.save()
             image_id = image.id
-            response = requests.post(f'http://127.0.0.1:8000/classification/classified_image/{image_id}/')
+            response = requests.post(f'http://0.0.0.0:8000/classification/classified_image/{image_id}/')
             response_data = response.json()
             
             image_url = response_data["processed_image_data"]["image_with_model_classification"]
