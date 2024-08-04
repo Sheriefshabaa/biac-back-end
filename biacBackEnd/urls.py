@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from classification_model import urls as classification_model_urls
 from classified_image import urls as classified_image
 from users import urls as auth_urls
 from image import urls as upolad_image_urls
 from firstAidsProcedure import urls as firstAidsProcedure_urls
 from tbsa import urls as tbsa_urls
+
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +33,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('results/',include(firstAidsProcedure_urls)),
     path('tbsa/',include(tbsa_urls)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

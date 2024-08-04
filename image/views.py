@@ -10,8 +10,13 @@ from .serializers import ImageSerializer
 from rest_framework.parsers import (MultiPartParser, FormParser)
 from rest_framework import status
 
+import environ
+import os
+import biacBackEnd.settings as settings
 
-
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env(os.path.join(settings.BASE_DIR, '.env'))
 
 
 
@@ -24,7 +29,7 @@ class UploadImageView(APIView):
         if serializer.is_valid():
             image = serializer.save()
             image_id = image.id
-            response = requests.post(f'http://127.0.0.1:8000/classification/classified_image/{image_id}/')
+            response = requests.post(f'http://{env("IP_ADDRESS")}:{env("PORT")}/classification/classified_image/{image_id}/')
             response_data = response.json()
             
             image_url = response_data["processed_image_data"]["image_with_model_classification"]

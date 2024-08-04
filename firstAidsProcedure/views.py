@@ -31,21 +31,21 @@ class ShowResultView(APIView):
     def get(self, request, id):
         classified_image = Classified_image.objects.get(id=id)
         classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image, context={'request': request})
-
-        # image = Image.objects.get(id=classified_image.image_id)
-
-        provided_image_serializer = GetImageSerializer(classified_image.image_id)
-
-
         
         burn_degree = classified_image_serializer.data['burn_degree']
         first_aids_list = FirstAidsProcedure.objects.filter(procedure_for_degree=burn_degree).order_by('procedure_order')
         first_aids_serializer = FirstAidsProcedureSerializer(first_aids_list, many=True)
+
+        provided_image_serializer = GetImageSerializer(classified_image.image_id)
+
+        absolute_image_url = request.build_absolute_uri(provided_image_serializer.data['provided_image'])
+
+        
         
         result = {
             'classified_image': classified_image_serializer.data,
             'firstAidsList': first_aids_serializer.data,
-            'provided_image':provided_image_serializer.data,
+            'provided_image':absolute_image_url,
         }
         return Response(result, status=status.HTTP_200_OK)
 

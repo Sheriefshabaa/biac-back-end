@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-from pathlib import Path
 from datetime import timedelta
 
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
 # Quick-start development settings - unsuitable for production
@@ -27,7 +32,7 @@ SECRET_KEY = 'django-insecure-(y_&n%*$2s!*=62bgo6%ncep=b5o7!e_ef$n(mrt5g^(27%@r0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 
@@ -60,10 +65,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 
     'dj_rest_auth',
-  
+
     'users',
     'biacBackEnd',
-    'classification_model',
     'image',
     'classified_image',
     'firstAidsProcedure',
@@ -71,7 +75,6 @@ INSTALLED_APPS = [
 ]
 # 'users',
 #     'biacBackEnd',
-#     'classification_model',
 #     'image',
 #     'classified_image'
 
@@ -90,7 +93,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'biacBackEnd.urls'
 
-
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:8000",  # Example origin with HTTP scheme and localhost
 #     "https://example.com",    # Example origin with HTTPS scheme and example.com
@@ -108,26 +110,40 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
+WSGI_APPLICATION = 'biacBackEnd.wsgi.application'  # redundant, why?
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.postgresql'),
+#         'NAME': os.getenv('DATABASE_NAME', 'biac'),
+#         'USER': os.getenv('DATABASE_USER', 'postgres'),
+#         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'biac'),
+#         'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+#         'PORT': os.getenv('DATABASE_PORT', '5432'),
+#     }
+# }
+
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.getenv('DATABASE_NAME', 'biac'),
-        'USER': os.getenv('DATABASE_USER', 'postgres'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'biac'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+        'ENGINE': env('DATABASE_ENGINE'),
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -166,14 +182,12 @@ STATIC_URL = '/static/'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'biacteamgp@gmail.com'
@@ -184,23 +198,11 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
-
 ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
-
-
-ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
-
+# ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
 AUTH_USER_MODEL = 'users.CustomUser'
-
-
-
-
-
-
-
-
 
 REST_AUTH = {
     'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
@@ -213,7 +215,7 @@ REST_AUTH = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30), # for testing only it supose to be 5 mins 
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # for testing only it supose to be 5 mins
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -244,7 +246,4 @@ AUTHENTICATION_BACKENDS = [
 
 CUSTOM_PASSWORD_RESET_CONFIRM = 'desired URL'
 
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')

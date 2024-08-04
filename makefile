@@ -1,4 +1,4 @@
 envactive:
-	env/scripts/activate
+	.venv/scripts/activate
 makeenv:
 	python -m venv env
