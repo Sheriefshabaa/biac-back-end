@@ -1,13 +1,10 @@
 # serializers.py in the users Django app
 from django.db import transaction
-from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from datetime import date
 from .models import CustomUser
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser 
 from image.models import Image 
 from classified_image.serializers import ClassifiedImageHistoryDataSerializer
 from allauth.account.utils import send_email_confirmation
@@ -96,7 +93,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
 
 
 
-class LoginTokenObtainPairSerializer(serializers.Serializer):
+class LoginObtainPairSerializer(serializers.Serializer):
     email = serializers.EmailField(required=False)
     password = serializers.CharField(write_only=True)
     
@@ -113,12 +110,8 @@ class LoginTokenObtainPairSerializer(serializers.Serializer):
         # Return tokens and user data (using custom user serializer)
         
         
-        token = RefreshToken.for_user(user)
         user_serializer = CustomUserDetailsSerializer(user)
         return {
-            'token': str(token.access_token),
-            'refresh': str(token),  # Include refresh token if needed
-            'user_id': user_serializer.data['pk'],
             'user_id': user_serializer.data['pk'],
         }
     
