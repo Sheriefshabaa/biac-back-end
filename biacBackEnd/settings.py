@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-import environ
-from pathlib import Path
 from datetime import timedelta
+
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     'dj_rest_auth',
-  
+
     'users',
     'biacBackEnd',
     'image',
@@ -91,7 +91,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'biacBackEnd.urls'
 
-
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:8000",  # Example origin with HTTP scheme and localhost
 #     "https://example.com",    # Example origin with HTTPS scheme and example.com
@@ -115,7 +114,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
+WSGI_APPLICATION = 'biacBackEnd.wsgi.application'  # redundant, why?
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -132,7 +131,6 @@ WSGI_APPLICATION = 'biacBackEnd.wsgi.application'
 
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
 
 DATABASES = {
     'default': {
@@ -182,14 +180,12 @@ STATIC_URL = '/static/'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'biacteamgp@gmail.com'
@@ -200,23 +196,11 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
-
 ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
-
-
-ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
-
+# ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
 AUTH_USER_MODEL = 'users.CustomUser'
-
-
-
-
-
-
-
-
 
 REST_AUTH = {
     'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
@@ -229,7 +213,7 @@ REST_AUTH = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30), # for testing only it supose to be 5 mins 
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # for testing only it supose to be 5 mins
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -261,6 +245,3 @@ AUTHENTICATION_BACKENDS = [
 CUSTOM_PASSWORD_RESET_CONFIRM = 'desired URL'
 
 # MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
-
-
-
