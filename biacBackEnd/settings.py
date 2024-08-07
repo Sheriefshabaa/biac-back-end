@@ -114,20 +114,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'biacBackEnd.wsgi.application'  # redundant, why?
+WSGI_APPLICATION = 'biacBackEnd.wsgi.application' 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-# DATABASES = {
-#     'default': {
-#         'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.postgresql'),
-#         'NAME': os.getenv('DATABASE_NAME', 'biac'),
-#         'USER': os.getenv('DATABASE_USER', 'postgres'),
-#         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'biac'),
-#         'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-#         'PORT': os.getenv('DATABASE_PORT', '5432'),
-#     }
-# }
 
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -198,7 +186,6 @@ PASSWORD_RESET_TIMEOUT = 14400
 
 ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
-# ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -207,23 +194,11 @@ REST_AUTH = {
     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
     'USER_DETAILS_SERIALIZER': 'users.serializers.CustomUserDetailsSerializer',
     'SESSION_LOGIN': True,
-    'USE_JWT': True,
-    'JWT_AUTH_COOKIE': 'auth',
-    'JWT_AUTH_HTTPONLY': True,
 }
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # for testing only it supose to be 5 mins
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ("Bearer",),
-}
+
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',
@@ -234,8 +209,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'my-app-auth'
 
 AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -244,4 +217,3 @@ AUTHENTICATION_BACKENDS = [
 
 CUSTOM_PASSWORD_RESET_CONFIRM = 'desired URL'
 
-# MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
