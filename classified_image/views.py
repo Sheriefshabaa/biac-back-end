@@ -1,4 +1,3 @@
-
 import os
 import uuid
 from rest_framework.views import APIView
@@ -8,7 +7,7 @@ from ultralytics import YOLO
 from PIL import Image as pil_image
 from .models import Classified_image
 from rest_framework import status
-from .serializers import ClassifiedImageHistoryDataSerializer, ClassifiedImageSerializer
+from .serializers import ClassifiedImageHistoryDataSerializer
 
 
 
@@ -57,7 +56,6 @@ def process_image(image) :
         sorted_counts = sorted(class_counts.items(), key=lambda x: x[1], reverse=True)
         top_class_id, top_class_count = sorted_counts[0]
         class_name = model.names[top_class_id]
-    print(f"bla bla {box_xywh[0][0]}")
     classified_image_object = Classified_image.objects.create(
         image_with_model_classification=output_image_path,
         image_id=image,
