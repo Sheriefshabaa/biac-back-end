@@ -8,7 +8,7 @@ from PIL import Image as pil_image
 from .models import Classified_image
 from rest_framework import status
 from .serializers import ClassifiedImageHistoryDataSerializer
-
+from drf_spectacular.utils import extend_schema 
 
 
 def process_image(image) :
@@ -71,8 +71,8 @@ def process_image(image) :
     return classified_image_serializer.data
     
 
-
 class classifiy_image(APIView):
+    @extend_schema(exclude=True)
     def post(self, request, id,format=None):
         image_id = id
         try:

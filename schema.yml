@@ -1,0 +1,808 @@
+openapi: 3.0.3
+info:
+  title: BIAC API DOCS
+  version: 0.0.1
+paths:
+  /auth/account-confirm-email/:
+    post:
+      operationId: auth_account_confirm_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/login/:
+    post:
+      operationId: auth_login_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginObtainPair'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginObtainPair'
+          description: ''
+  /auth/password/reset/confirm/{uidb64}/{token}/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/registration/:
+    post:
+      operationId: auth_registration_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/registration/resend-email/:
+    post:
+      operationId: auth_registration_resend_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/registration/verify-email/:
+    post:
+      operationId: auth_registration_verify_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/update_profile/{id}/:
+    put:
+      operationId: auth_update_profile_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateProfile'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProfile'
+          description: ''
+  /auth/user_history/{id}/:
+    get:
+      operationId: auth_user_history_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistoryUserClassifiedImages'
+          description: ''
+  /classification/upload_image/:
+    post:
+      operationId: classification_upload_image_create
+      tags:
+      - classification
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Image'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+  /results/download_result/{id}/:
+    get:
+      operationId: results_download_result_retrieve
+      description: Downloads the results as a PDF.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - results
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: A PDF file containing the results.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /results/show_result/{id}/:
+    get:
+      operationId: results_show_result_retrieve
+      description: Retrieve the classified image details, associated first aid procedures,
+        and the provided image URL.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - results
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowResultResponse'
+          description: ''
+  /tbsa/tbsa_basic_info/:
+    post:
+      operationId: tbsa_tbsa_basic_info_create
+      tags:
+      - tbsa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TbsaBasicInfo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TbsaBasicInfo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TbsaBasicInfo'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TbsaBasicInfo'
+          description: ''
+  /tbsa/tbsa_burn_images/{id}/:
+    post:
+      operationId: tbsa_tbsa_burn_images_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - tbsa
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TbsaBurnImages'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TbsaBurnImages'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TbsaBurnImages'
+          description: ''
+  /tbsa/tbsa_hand_image/{id}/:
+    post:
+      operationId: tbsa_tbsa_hand_image_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - tbsa
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TbsaHandImage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TbsaHandImage'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TbsaHandImage'
+          description: ''
+  /tbsa/tbsa_model/{tbsa_id}/{hand_id}/{burn_last_image_id}/:
+    get:
+      operationId: tbsa_tbsa_model_retrieve
+      description: Calculates the TBSA (Total Body Surface Area) based on hand and
+        burn images, updates the TBSA object with calculated values, and returns the
+        results.
+      parameters:
+      - in: path
+        name: burn_last_image_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: hand_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: tbsa_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - tbsa
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowTbsa'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseTBSA'
+          description: ''
+components:
+  schemas:
+    AgeTypeEnum:
+      enum:
+      - M
+      - F
+      type: string
+      description: |-
+        * `M` - Male
+        * `F` - Female
+    BlankEnum:
+      enum:
+      - ''
+    ClassifiedImageHistoryData:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image_with_model_classification:
+          type: string
+          format: uri
+        confidence_score:
+          type: number
+          format: double
+          nullable: true
+        burn_degree:
+          type: string
+          nullable: true
+          maxLength: 50
+      required:
+      - id
+      - image_with_model_classification
+    CustomRegister:
+      type: object
+      description: |-
+        this function takes the user data for registration
+        and if the data are valid it creates a user object in database
+      properties:
+        username:
+          type: string
+          maxLength: 150
+          minLength: 1
+        email:
+          type: string
+          format: email
+        password1:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+      required:
+      - email
+      - first_name
+      - last_name
+      - password1
+      - password2
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          default: The server is having an issue... try later!
+    ErrorResponseTBSA:
+      type: object
+      properties:
+        detail:
+          type: string
+          default: The server is having an issue... try later!
+    FirstAidsProcedure:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        procedure:
+          type: string
+          maxLength: 100
+        procedure_for_degree:
+          type: string
+          maxLength: 50
+        procedure_order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - id
+      - procedure
+      - procedure_for_degree
+      - procedure_order
+    GenderEnum:
+      enum:
+      - M
+      - F
+      type: string
+      description: |-
+        * `M` - Male
+        * `F` - Female
+    HistoryUserClassifiedImages:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        provided_image:
+          type: string
+          format: uri
+        captured_at:
+          type: string
+          format: date-time
+        classified_images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassifiedImageHistoryData'
+          readOnly: true
+      required:
+      - captured_at
+      - classified_images
+      - id
+      - provided_image
+    Image:
+      type: object
+      properties:
+        provided_image:
+          type: string
+          format: uri
+      required:
+      - provided_image
+    LoginObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+    NullEnum:
+      enum:
+      - null
+    PasswordResetConfirm:
+      type: object
+      description: Serializer for confirming a password reset attempt.
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
+      - uid
+    ResendEmailVerification:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    RestAuthDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+          readOnly: true
+      required:
+      - detail
+    ShowResultResponse:
+      type: object
+      properties:
+        classified_image:
+          $ref: '#/components/schemas/ClassifiedImageHistoryData'
+        firstAidsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirstAidsProcedure'
+        provided_image:
+          type: string
+          format: uri
+      required:
+      - classified_image
+      - firstAidsList
+      - provided_image
+    ShowTbsa:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        patient_name:
+          type: string
+          maxLength: 25
+        age_type:
+          $ref: '#/components/schemas/AgeTypeEnum'
+        survival_probability:
+          type: number
+          format: double
+          nullable: true
+        age:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        total_burned_area:
+          type: number
+          format: double
+          nullable: true
+        is_inhalation:
+          type: boolean
+        weight:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        first_dose_amount:
+          type: number
+          format: double
+          nullable: true
+        second_dose_amount:
+          type: number
+          format: double
+          nullable: true
+        third_dose_amount:
+          type: number
+          format: double
+          nullable: true
+        tbsa:
+          type: number
+          format: double
+          nullable: true
+        user_id:
+          type: integer
+      required:
+      - age
+      - age_type
+      - id
+      - is_inhalation
+      - patient_name
+      - user_id
+      - weight
+    TbsaBasicInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        patient_name:
+          type: string
+          maxLength: 25
+        age_type:
+          $ref: '#/components/schemas/AgeTypeEnum'
+        age:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        is_inhalation:
+          type: boolean
+        weight:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - age
+      - age_type
+      - id
+      - is_inhalation
+      - patient_name
+      - weight
+    TbsaBurnImages:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          writeOnly: true
+      required:
+      - images
+    TbsaHandImage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+    UpdateProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 20
+        last_name:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        gender:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 30
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        user_image:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - first_name
+      - last_name
+    VerifyEmail:
+      type: object
+      properties:
+        key:
+          type: string
+          writeOnly: true
+      required:
+      - key
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

@@ -12,7 +12,8 @@ from PIL import Image
 from .models import Tbsa_image , Tbsa
 import pandas
 from tbsa.serializers import TbsaBasicInfoSerializer , TbsaHandImageSerializer , TbsaBurnImagesSerializer , TbsaImageSerializer,ShowTbsaSerializer
-# Create your views here.
+from drf_spectacular.utils import extend_schema, OpenApiResponse, inline_serializer
+from rest_framework import serializers
 
 
 
@@ -119,6 +120,18 @@ def calculate_the_survival_probability(age, tbsa, inhalation_injury):
 
 
 class TbsaModelView(APIView):
+    @extend_schema(
+        responses={
+            200: ShowTbsaSerializer(),
+            400: inline_serializer(
+                name='ErrorResponseTBSA',
+                fields={
+                    'detail': serializers.CharField(default="The server is having an issue... try later!"),
+                }
+            ),
+        },
+        description="Calculates the TBSA (Total Body Surface Area) based on hand and burn images, updates the TBSA object with calculated values, and returns the results."
+    )
     def get(self, request,tbsa_id,hand_id,burn_last_image_id):
         # try:
             hand_image = Tbsa_image.objects.get(pk=hand_id)
@@ -159,8 +172,6 @@ class TbsaModelView(APIView):
             tbsa_object.save()
             tbsa_serializer = ShowTbsaSerializer(tbsa_object)
             return Response(tbsa_serializer.data,status=status.HTTP_200_OK)
-        # except:
-        #    return Response('the server is having issue... try later!',status=status.HTTP_400_BAD_REQUEST)
            
 
 
