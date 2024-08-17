@@ -64,6 +64,9 @@ INSTALLED_APPS = [
 
     'dj_rest_auth',
 
+    #swagger package
+    'drf_spectacular',
+
     'users',
     'biacBackEnd',
     'image',
@@ -71,10 +74,7 @@ INSTALLED_APPS = [
     'firstAidsProcedure',
     'tbsa',
 ]
-# 'users',
-#     'biacBackEnd',
-#     'image',
-#     'classified_image'
+
 
 MIDDLEWARE = [
     # 'corsheaders.middleware.CorsMiddleware',
@@ -130,6 +130,10 @@ DATABASES = {
         'PORT': env('DATABASE_PORT'),
     }
 }
+
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -207,7 +211,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'BIAC API DOCS',
+    'VERSION': '0.0.1',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
 
 
 AUTHENTICATION_BACKENDS = [
