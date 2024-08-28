@@ -17,11 +17,26 @@ from image.serializers import GetImageSerializer
 from .models import FirstAidsProcedure
 from .serializers import FirstAidsProcedureSerializer
 
+from drf_spectacular.utils import extend_schema, OpenApiResponse ,inline_serializer
+from rest_framework import serializers
 
 # Create your views here.
 
 
 class ShowResultView(APIView):
+    @extend_schema(
+        responses={
+            200: inline_serializer(
+                name='ShowResultResponse',
+                fields={
+                    'classified_image': ClassifiedImageHistoryDataSerializer(),
+                    'firstAidsList': FirstAidsProcedureSerializer(many=True),
+                    'provided_image': serializers.URLField(),
+                }
+            ),
+        },
+        description="Retrieve the classified image details, associated first aid procedures, and the provided image URL."
+    )
     def get(self, request, id):
         classified_image = Classified_image.objects.get(id=id)
         classified_image_serializer = ClassifiedImageHistoryDataSerializer(classified_image,
@@ -44,7 +59,21 @@ class ShowResultView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+
+
 class DownloadResultsAsPDFView(APIView):
+    @extend_schema(
+        responses={
+            200: OpenApiResponse(description="A PDF file containing the results."),
+            400: inline_serializer(
+                name='ErrorResponse',
+                fields={
+                    'detail': serializers.CharField(default="The server is having an issue... try later!"),
+                }
+            ),
+        },
+        description="Downloads the results as a PDF."
+    )
     def get(self, request, id):
         try:
             classified_image = Classified_image.objects.get(id=id)

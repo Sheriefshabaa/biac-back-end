@@ -1,14 +1,14 @@
-from django.http import HttpResponse, JsonResponse
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import CustomUser
 from .serializers import LoginObtainPairSerializer , HistoryUserClassifiedImagesSerializer , UpdateProfileSerializer
-from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import CustomUser
 from rest_framework import status
 from image.models import Image
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -58,6 +58,12 @@ class UpdateProfileView(APIView):
 # returns the name of degree burn and the time that classification happend in and the image of classified image
 class HistoryUserView(APIView):
     # permission_classes = [IsAuthenticated]
+    @extend_schema(
+        responses={
+            200: HistoryUserClassifiedImagesSerializer(many=True),
+        }
+    )
+
     def get(self, request, id , *args,**kwargs):
         images = Image.objects.filter(user_id=id)
         serialized_data = HistoryUserClassifiedImagesSerializer(images, many=True, context={'request': request}).data
